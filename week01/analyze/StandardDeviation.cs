@@ -62,3 +62,5 @@ public static class StandardDeviation {
         return Math.Sqrt(variance);
     }
 }
+
+//1 O(n)  2 O(n^2)  3 O(n)

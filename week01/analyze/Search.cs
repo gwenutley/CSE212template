@@ -63,3 +63,5 @@ public static class Search {
         return 1 + SearchSorted2(data, target, start, middle - 1);
     }
 }
+
+//O(n) O(log n) 
