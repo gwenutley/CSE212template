@@ -47,3 +47,6 @@
         return stack.Pop();
     }
 }
+
+// 2
+// 1
