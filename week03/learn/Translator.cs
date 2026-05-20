@@ -25,6 +25,8 @@ public class Translator
     public void AddWord(string fromWord, string toWord)
     {
         // ADD YOUR CODE HERE
+        _words[fromWord] = toWord;
+
     }
 
     /// <summary>
@@ -35,6 +37,10 @@ public class Translator
     public string Translate(string fromWord)
     {
         // ADD YOUR CODE HERE
-        return "";
+        if (_words.TryGetValue(fromWord, out string toWord))
+        {
+            return toWord;
+        }
+        return "???";
     }
 }
