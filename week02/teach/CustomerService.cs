@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using System.IO.Pipes;
+
+/// <summary>
 /// Maintain a Customer Service Queue.  Allows new customers to be 
 /// added and allows customers to be serviced.
 /// </summary>
@@ -10,25 +12,74 @@ public class CustomerService {
 
         // Test Cases
 
-        // Test 1
-        // Scenario: 
-        // Expected Result: 
-        Console.WriteLine("Test 1");
+        
 
-        // Defect(s) Found: 
+        // Test 1
+        // Scenario: Test that the size of the queue is valid and if not it is set default to 10
+        // Expected Result: Expect it will return 10, for the default size being 10
+        Console.WriteLine("Test 1");
+        var service = new CustomerService(-1);
+        Console.WriteLine(service);
+
+        // Defect(s) Found: no problems
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Test that a customer can be added and then served
+        // Expected Result: expect for it to display the customer that was added
         Console.WriteLine("Test 2");
+        service = new CustomerService(3);
+        service.AddNewCustomer();
+        service.ServeCustomer();
 
-        // Defect(s) Found: 
+        // Defect(s) Found: required a change to the ServeCustomer method to get the customer before deleting from the list
 
         Console.WriteLine("=================");
 
         // Add more Test Cases As Needed Below
+        // Test 3
+        // Scenario: Check that when multiple customers are added that they are served in the correct order.
+        // Expected Result: expect first customer added to be displayed first and then the next one
+        Console.WriteLine("Test 3");
+        service = new CustomerService(3);
+        service.AddNewCustomer();
+        service.AddNewCustomer();
+        Console.WriteLine($"Before serving customers: {service}");
+        service.ServeCustomer();
+        service.ServeCustomer();
+        Console.WriteLine($"After serving customers: {service}");
+        Console.WriteLine(service);
+
+        // Defect(s) Found: no problems
+
+        Console.WriteLine("=================");
+
+        // Test 4
+        // Scenario: Make sure that a customer can be added normally when the queue is not full
+        // Expected Result: return customer and then when full return an error message
+        Console.WriteLine("Test 4");
+        service = new CustomerService(2);
+        service.AddNewCustomer();
+        service.AddNewCustomer();
+        service.AddNewCustomer();
+        Console.WriteLine(service);
+
+        // Defect(s) Found: queue size check was wrong, needed to do >= instead of > in AddNewCustomer 
+
+        Console.WriteLine("=================");
+
+        // Test 5
+        // Scenario: make sure that an error is returned when the queue is empty and a customer is served
+        // Expected Result: error message is returned when trying to serve a customer from an empty queue
+        Console.WriteLine("Test 5");
+        service = new CustomerService(2);
+        service.ServeCustomer();
+        Console.WriteLine(service);
+
+        // Defect(s) Found: required a change to the ServeCustomer method to get the customer before deleting from the list
+
+        Console.WriteLine("=================");
     }
 
     private readonly List<Customer> _queue = new();
@@ -67,7 +118,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,9 +139,14 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
-        var customer = _queue[0];
-        Console.WriteLine(customer);
+        if (_queue.Count == 0) {
+            Console.WriteLine("No Customers in Queue.");
+            return;
+        } else {
+            var customer = _queue[0];
+            _queue.RemoveAt(0);
+            Console.WriteLine(customer);
+        }
     }
 
     /// <summary>
