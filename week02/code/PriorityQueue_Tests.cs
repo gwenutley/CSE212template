@@ -6,9 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 public class PriorityQueueTests
 {
     [TestMethod]
-    // Scenario: Add 3 people to the queue 2 with the same priority and dequeue all of them
-    // Expected Result: dequeue should return people in the order Tim, Sue, Bob
-    // Defect(s) Found: priority queue handling of same priority items
+    // Scenario: Add 3 people to the queue 2 with the same priority and dequeue all of them, make sure high priority dequeues first and if they have the same then the first one enqued should be dequeued first
+    // Expected Result: dequeue should return people in the order Tim, Sue, Bob, from highest to lowest priority
+    // Defect(s) Found: items aren't removed from the queue after dequeing, and the check for highest priority skips that last item in the queue
     public void TestPriorityQueue_1()
     {
         var priorityQueue = new PriorityQueue();
@@ -29,7 +29,7 @@ public class PriorityQueueTests
     [TestMethod]
     // Scenario: try to dequeue from and empty queue
     // Expected Result: return an error with a message
-    // Defect(s) Found: empty queue handling
+    // Defect(s) Found: no problems
     public void TestPriorityQueue_2()
     {
         var priorityQueue = new PriorityQueue();
